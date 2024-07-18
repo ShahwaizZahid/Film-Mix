@@ -1,5 +1,3 @@
-me route
-
 import { connect } from "@/dbconfig/dbconfig";
 import { User } from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
