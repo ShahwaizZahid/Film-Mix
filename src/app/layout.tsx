@@ -4,6 +4,8 @@ import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { QueryClientProviderWrapper } from "@/helper/querryclient-provider";
+import { Toaster } from "react-hot-toast";
+
 const inter = Inter({ subsets: ["latin"] });
 
 import { cn } from "@/lib/utils";
@@ -33,6 +35,7 @@ export default function RootLayout({
         )}
       >
         <QueryClientProviderWrapper>{children}</QueryClientProviderWrapper>
+        <Toaster />
       </body>
     </html>
   );

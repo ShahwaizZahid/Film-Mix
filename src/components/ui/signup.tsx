@@ -6,10 +6,10 @@ import { z } from "zod";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-// import { useNavigate } from "react-router-dom";
 import { SignupFormData } from "@/hooks/DataTypes";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 import {
   Form,
@@ -37,9 +37,9 @@ export function SignupForm() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     console.log(data);
-    // const res = await axios.post("/api/users/signup", data);
-    await signupMutation.mutateAsync(data);
-    console.log("measss", signupMutation?.data?.message);
+    const res = await signupMutation.mutateAsync(data);
+    console.log("measss", res);
+    toast.success(res);
   };
 
   return (
@@ -133,8 +133,8 @@ function useSignup() {
     mutationKey: ["signup"],
     mutationFn: async (data) => {
       const res = await axios.post("/api/users/signup", data);
-      console.log("jel");
-      return res.data;
+      console.log(res.data.message);
+      return res.data.message;
     },
     onSuccess: (_, { email }) => {
       console.log("success");
@@ -148,7 +148,7 @@ function useSignup() {
         (error.response?.data as { message?: string })?.message ||
         "An error occurred during signup";
 
-      //   toast.error(errorMessage);
+      toast.error(errorMessage);
     },
   });
 }
