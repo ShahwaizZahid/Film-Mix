@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { QueryClientProviderWrapper } from "@/helper/querryclient-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 import { cn } from "@/lib/utils";
@@ -21,15 +23,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = new QueryClient();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased text-white bg-slate-900",
           fontSans.variable
         )}
       >
-        {children}
+        <QueryClientProviderWrapper>{children}</QueryClientProviderWrapper>
       </body>
     </html>
   );
