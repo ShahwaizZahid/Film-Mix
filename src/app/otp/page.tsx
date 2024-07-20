@@ -1,9 +1,9 @@
 import React from "react";
-
+import { InputOTPForm } from "@/components/ui/otp";
 export default function page() {
   return (
     <>
-      <span className="loading loading-infinity loading-md"></span>
+      <InputOTPForm></InputOTPForm>
     </>
   );
 }

@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { SignupFormData } from "@/hooks/DataTypes";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Form,
