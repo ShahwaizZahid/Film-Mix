@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   }
 
   const reqBody = await request.json();
-
+  console.log(reqBody);
   const { email = "", password = "" } = reqBody;
 
   if (!email || typeof email !== "string") {

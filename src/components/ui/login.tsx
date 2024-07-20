@@ -31,13 +31,11 @@ export function LoginForm() {
     },
   });
 
-  //   const signupMutation = useSignup();
+  const loginMutation = useLogin();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
-    console.log(data);
-    // const res = await signupMutation.mutateAsync(data);
-    // console.log("measss", res);
-    // toast.success(res);
+    const res = await loginMutation.mutateAsync(data);
+    toast.success(res.message);
   };
 
   return (
@@ -108,28 +106,26 @@ export function LoginForm() {
   );
 }
 
-// function useSignup() {
-//   const router = useRouter();
-//   return useMutation<any, AxiosError, SignupFormData>({
-//     mutationKey: ["signup"],
-//     mutationFn: async (data) => {
-//       const res = await axios.post("/api/users/signup", data);
-//       console.log(res.data.message);
-//       return res.data.message;
-//     },
-//     onSuccess: (_, { email }) => {
-//       console.log("success");
-//       router.push(`/otp?email=${encodeURIComponent(email)}`);
-//     },
-//     onError: (error) => {
-//       console.error("Signup failed: ", error);
+import { useRouter, useSearchParams } from "next/navigation";
 
-//       // Type assertion for error response
-//       const errorMessage =
-//         (error.response?.data as { message?: string })?.message ||
-//         "An error occurred during signup";
+function useLogin() {
+  const router = useRouter();
+  return useMutation<any, AxiosError, LoginFormData>({
+    mutationKey: ["login"],
+    mutationFn: async ({ email, password }) => {
+      const res = await axios.post("/api/users/login", { email, password });
+      return res.data;
+    },
+    onSuccess: () => {
+      router.push(`/`);
+    },
+    onError: (error) => {
+      console.error("Login failed: ", error);
 
-//       toast.error(errorMessage);
-//     },
-//   });
-// }
+      const errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        "An error occurred during login";
+      toast.error(errorMessage);
+    },
+  });
+}

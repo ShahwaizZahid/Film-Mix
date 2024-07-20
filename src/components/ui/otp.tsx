@@ -176,6 +176,7 @@ function useOTPVerifyMutation() {
 }
 
 function useAgainOtpMutation() {
+  const router = useRouter();
   return useMutation<any, AxiosError, { email: string }>({
     mutationKey: ["otp"],
     mutationFn: async (data) => {
@@ -184,6 +185,7 @@ function useAgainOtpMutation() {
     },
     onSuccess: () => {
       toast.success("OTP sent again successfully!");
+      router.push(`/login`);
     },
     onError: (error) => {
       console.error("Sending OTP again failed: ", error);
