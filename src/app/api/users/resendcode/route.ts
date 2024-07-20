@@ -2,6 +2,7 @@ import { connect } from "@/dbconfig/dbconfig";
 import { User } from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import { sendVerificationEmail } from "@/helper/sendMailer";
+
 export async function POST(request: NextRequest) {
   try {
     await connect();
@@ -14,11 +15,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  console.log("aa");
   const reqBody = await request.json();
   console.log(reqBody);
   const { email = "" } = reqBody;
   const user = await User.findOne({ email: email });
-
+  console.log("usr", user);
   if (!user) {
     console.log("you are unable to resend code");
     return NextResponse.json(
@@ -51,7 +53,8 @@ export async function POST(request: NextRequest) {
     console.error("Error while logging in: ", err);
     return NextResponse.json(
       {
-        message: "Error while sending email. Make sure it is a valid email.",
+        message:
+          "Error while resending otp. Make sure it is a valid to resend code.",
       },
       { status: 500 }
     );

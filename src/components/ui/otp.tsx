@@ -42,6 +42,8 @@ export function InputOTPForm() {
   const [isResendEnabled, setIsResendEnabled] = useState(false);
 
   const OTPVerifyMutation = useOTPVerifyMutation();
+  const OtpAgainMutation = useAgainOtpMutation();
+
   //   const OtpAgainMutation = useOAgainOtpMutation();
 
   useEffect(() => {
@@ -70,10 +72,16 @@ export function InputOTPForm() {
     toast.success(res);
   }
 
-  function handleResendOTP() {
+  async function handleResendOTP() {
+    if (!email) {
+      return toast.error("you can't resend code");
+    }
+
     setTimer(60);
     setIsResendEnabled(false);
-
+    console.log("email", email);
+    const res = await OtpAgainMutation.mutateAsync({ email: email });
+    console.log("res", res);
     console.log("Resend OTP");
   }
 
@@ -168,7 +176,7 @@ function useOTPVerifyMutation() {
 }
 
 function useAgainOtpMutation() {
-  return useMutation<any, AxiosError, OTPFormData>({
+  return useMutation<any, AxiosError, { email: string }>({
     mutationKey: ["otp"],
     mutationFn: async (data) => {
       const res = await axios.post("/api/users/resendcode", data);
