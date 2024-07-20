@@ -1,12 +1,10 @@
 import React from "react";
-import { sendVerificationEmail } from "@/helper/sendMailer";
-export default function page() {
-  // const sendEmail = async () => {
-  //   sendVerificationEmail({
-  //     email: "shahwaizmughal941@gmail.com",
-  //     validationCode: "1234",
-  //   });
-  // };
-  // sendEmail();
-  return <div>hello</div>;
+import { LoginForm } from "@/components/ui/login";
+
+export default function Page() {
+  return (
+    <div className="min-h-screen min-w-screen flex justify-center items-center">
+      <LoginForm />
+    </div>
+  );
 }

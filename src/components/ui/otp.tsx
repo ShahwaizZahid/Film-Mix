@@ -94,7 +94,7 @@ export function InputOTPForm() {
           </h1>
           <p className="my-4 font-semibold md:w-[60%] w-[80%]">
             Please enter the one-time password sent to your email:{" "}
-            <span className="text-pink-500">shahwaiz</span>
+            <span className="text-pink-500">{email}</span>
           </p>
         </div>
         <div className="flex   justify-center items-center ">
@@ -138,9 +138,9 @@ export function InputOTPForm() {
           <p className="md:w-[60%] w-[80%] ">
             Upon initiating account verification, a 6-digit verification code is
             automatically generated and sent to the contact information
-            associated with your{" "}
-            <span className="text-pink-500 font-bold">Email:</span> . Please
-            enter this code in the provided field below to complete the
+            associated with your {}
+            <span className="text-pink-500 font-bold">Email:{email}</span> .
+            Please enter this code in the provided field below to complete the
             verification process. This step ensures the security and integrity
             of your account information.
           </p>
