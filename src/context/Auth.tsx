@@ -2,14 +2,11 @@
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-type User = {
-  user: boolean;
-  userId: string | null;
-};
+import { USERTypes } from "@/hooks/DataTypes";
 
 type AuthContextType = {
-  user: User;
-  setUser: (user: User) => void;
+  user: USERTypes;
+  setUser: (user: USERTypes) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -29,16 +26,19 @@ export function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User>({ user: false, userId: null });
+  const [user, setUser] = useState<any>({
+    message: null,
+    userer: null,
+  });
 
-  const { isLoading } = useQuery<User, AxiosError>({
+  const { isLoading } = useQuery<USERTypes, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
-      const response = await axios.get("/api/users/me");
+      const response = await axios.post("/api/users/me");
 
-      console.log(response.data);
-      // if (response.data)
-      //   setUser({ user: true, userId: response.data.user.token });
+      console.log(response.data.user);
+      if (response.data)
+        setUser({ message: response.data.message, user: response.data.user });
 
       return response.data;
     },

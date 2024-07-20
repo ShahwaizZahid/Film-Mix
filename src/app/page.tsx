@@ -1,10 +1,17 @@
+"use client";
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
 import "@/styles/home.css";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import { useAuthContext } from "@/context/Auth";
+import { useEffect } from "react";
 export default function page() {
+  const { user } = useAuthContext();
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <>
       <Navbar></Navbar>
