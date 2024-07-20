@@ -9,9 +9,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/context/Auth";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuthContext();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -54,7 +56,7 @@ export default function Navbar() {
           </DropdownMenu>
           {/* Desktop Login Button */}
           <Button className="hidden md:inline-flex bg-primary text-primary-foreground px-4 py-2 rounded-md  border-white border-2">
-            <Link href="/login">login</Link>
+            {user.user ? "Logout" : <Link href="/login">login</Link>}
           </Button>
         </div>
 
@@ -94,8 +96,8 @@ export default function Navbar() {
                 <DropdownMenuItem>System</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full">
-              Login
+            <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+              {user.user ? "Logout" : <Link href="/login">login</Link>}
             </Button>
           </div>
         </div>
