@@ -15,13 +15,13 @@ export async function POST(request: NextRequest) {
   }
   const reqBody = await request.json();
   const { token = "", email = "" } = reqBody;
-  console.log(reqBody);
   const user = await User.findOne({
     email: email,
     verifyToken: token,
-    verifyTokenExpiry: { $gt: new Date() }, // Check if verifyTokenExpiry is greater than current date/time
+    verifyTokenExpiry: { $gt: new Date() },
   });
 
+  console.log("user", user);
   if (!user) {
     return NextResponse.json(
       { message: "Invalid or expired validation code." },
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   try {
     await user.save();
-    console.log("verify token");
+    console.log("successfully verify token");
     return NextResponse.json(
       { message: "Email verified successfully." },
       { status: 200 }

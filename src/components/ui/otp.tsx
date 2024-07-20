@@ -10,6 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { OTPFormData } from "@/hooks/DataTypes";
+import toast from "react-hot-toast";
 
 import {
   Form,
@@ -40,6 +41,9 @@ export function InputOTPForm() {
   const [timer, setTimer] = useState(60);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
 
+  const OTPVerifyMutation = useOTPVerifyMutation();
+  //   const OtpAgainMutation = useOAgainOtpMutation();
+
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (timer > 0) {
@@ -59,15 +63,17 @@ export function InputOTPForm() {
     }
   }, [form.watch("pin")]);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data, email);
-    // Add your server submission logic here
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const newData: any = { token: data.pin, email: email };
+    const res = await OTPVerifyMutation.mutateAsync(newData);
+    console.log(res);
+    toast.success(res);
   }
 
   function handleResendOTP() {
     setTimer(60);
     setIsResendEnabled(false);
-    // Add your resend OTP logic here
+
     console.log("Resend OTP");
   }
 
@@ -142,25 +148,21 @@ function useOTPVerifyMutation() {
   return useMutation<any, AxiosError, OTPFormData>({
     mutationKey: ["otp"],
     mutationFn: async (data) => {
-      return await axios.post("/api/users/verifyemail", data);
+      const res = await axios.post("/api/users/verifyemail", data);
+      console.log("res", res.data);
+      return res.data.message;
     },
     onSuccess: (_, { email }) => {
-      // toast.success("OTP verified successfully!");
-      // navigate("/login", {
-      //   replace: true,
-      //   state: {
-      //     email,
-      //   },
-      // });
+      console.log("successfully verify", email);
     },
     onError: (error) => {
-      console.error("OTP verification failed: ", error);
+      console.error("OTP verification failed: ", error.message);
 
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
         "An error occurred during OTP verification";
 
-      // toast.error(errorMessage);
+      toast.error(errorMessage);
     },
   });
 }
