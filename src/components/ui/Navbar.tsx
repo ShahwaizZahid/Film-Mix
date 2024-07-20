@@ -54,31 +54,33 @@ export default function Navbar() {
             About Us
           </Link>
         </div>
-        <div className="flex justify-center  items-center">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center  gap-1 mr-9 border-none">
-              <span>Theme</span>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Light</DropdownMenuItem>
-              <DropdownMenuItem>Dark</DropdownMenuItem>
-              <DropdownMenuItem>System</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          {/* Desktop Login Button */}
+        <div className=" md:block hidden ">
+          <div className="flex justify-center items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center  gap-1 mr-9 border-none">
+                <span>Theme</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Light</DropdownMenuItem>
+                <DropdownMenuItem>Dark</DropdownMenuItem>
+                <DropdownMenuItem>System</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {/* Desktop Login Button */}
 
-          {user.user ? (
-            <Button
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          ) : (
-            <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
-              <Link href="/login">login</Link>
-            </Button>
-          )}
+            {user.user ? (
+              <Button
+                className="bg-primary  text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+                <Link href="/login">login</Link>
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
