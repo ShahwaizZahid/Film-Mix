@@ -1,0 +1,34 @@
+.animated-bg {
+  height: calc(100vh - 70px);
+  background: radial-gradient(
+    circle,
+    rgb(73, 67, 67),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(12, 11, 11),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(12, 11, 11),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31),
+    rgb(32, 31, 31)
+  );
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
+}
+
+/* Keyframes for gradient animation */
+@keyframes gradient {
+  0% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 50% 50%;
+  }
+}

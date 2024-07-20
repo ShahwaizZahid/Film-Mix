@@ -28,20 +28,22 @@ export default function Navbar() {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex items-center gap-6">
-          <Link href="#" className="hover:underline">
+          <Link href="/" className="hover:underline">
             Home
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="movies" className="hover:underline">
             Movies
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="/contactus" className="hover:underline">
             Contact Us
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="aboutus" className="hover:underline">
             About Us
           </Link>
+        </div>
+        <div className="flex justify-center  items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1">
+            <DropdownMenuTrigger className="flex items-center  gap-1 mr-9 border-none">
               <span>Theme</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -50,12 +52,11 @@ export default function Navbar() {
               <DropdownMenuItem>System</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {/* Desktop Login Button */}
+          <Button className="hidden md:inline-flex bg-primary text-primary-foreground px-4 py-2 rounded-md">
+            Login
+          </Button>
         </div>
-
-        {/* Desktop Login Button */}
-        <Button className="hidden md:inline-flex bg-primary text-primary-foreground px-4 py-2 rounded-md">
-          Login
-        </Button>
 
         {/* Mobile Menu Button */}
         <Button
@@ -68,20 +69,21 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black text-white py-4">
+        <div className="md:hidden bg-black text-white py-4 ">
           <div className="container mx-auto px-4">
-            <Link href="#" className="block py-2 hover:underline">
+            <Link href="/" className="block py-2 hover:underline">
               Home
             </Link>
-            <Link href="#" className="block py-2 hover:underline">
+            <Link href="/movies" className="block py-2 hover:underline">
               Movies
             </Link>
-            <Link href="#" className="block py-2 hover:underline">
+            <Link href="/contactus" className="block py-2 hover:underline">
               Contact Us
             </Link>
-            <Link href="#" className="block py-2 hover:underline">
+            <Link href="/aboutus" className="block py-2 hover:underline">
               About Us
             </Link>
+
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 mt-4">
                 <span>Theme</span>

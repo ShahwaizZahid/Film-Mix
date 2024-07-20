@@ -1,10 +1,35 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/Navbar";
+import "@/styles/home.css";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 export default function page() {
   return (
     <>
       <Navbar></Navbar>
+      <div className="animated-bg flex justify-center  text-center">
+        <div className="md:w-[70%] w-[90%]">
+          <h1 className="text-4xl md:text-6xl font-bold text-white my-16 ">
+            Welcome to MovieLand
+          </h1>
+          <p className="text-lg md:text-xl text-white mb-6 animate-slide-in my-20  py-10">
+            Filmix is your go-to destination for all things movies. Discover
+            detailed information about your favorite films, including cast, plot
+            summaries, trailers, and reviews. Stay updated with the latest
+            releases, top picks, and timeless classics. Dive into the world of
+            cinema with Filmix!
+          </p>
+          <div className="space-x-8  my-16">
+            <Button className="border-white border-2 py-2 px-6">
+              <Link href="/movies">Get started</Link>
+            </Button>
+            <Button className="border-white border-2 py-2 px-6">
+              <Link href="/contactus">Contact us</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
