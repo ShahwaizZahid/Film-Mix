@@ -13,12 +13,23 @@ import { useAuthContext } from "@/context/Auth";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useAuthContext();
+  const { user, setUser } = useAuthContext();
+  const logoutMutation = useLogout();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleLogout = async () => {
+    try {
+      if (user) {
+        await logoutMutation.mutateAsync();
+        setUser({ message: "", user: null });
+      }
+    } catch (error) {
+      console.error("Logout error: ", error);
+    }
+  };
   return (
     <nav className="bg-black text-white shadow-md border-b-2 border-b-white">
       <div className="container mx-auto flex items-center justify-between p-4">
@@ -55,9 +66,19 @@ export default function Navbar() {
             </DropdownMenuContent>
           </DropdownMenu>
           {/* Desktop Login Button */}
-          <Button className="hidden md:inline-flex bg-primary text-primary-foreground px-4 py-2 rounded-md  border-white border-2">
-            {user.user ? "Logout" : <Link href="/login">login</Link>}
-          </Button>
+
+          {user.user ? (
+            <Button
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+              <Link href="/login">login</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -96,12 +117,50 @@ export default function Navbar() {
                 <DropdownMenuItem>System</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
-              {user.user ? "Logout" : <Link href="/login">login</Link>}
-            </Button>
+            {user.user ? (
+              <Button
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+                <Link href="/login">login</Link>
+              </Button>
+            )}
           </div>
         </div>
       )}
     </nav>
   );
+}
+
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+function useLogout() {
+  const router = useRouter();
+
+  return useMutation<any, AxiosError>({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      await axios.get("/api/users/logout");
+    },
+    onSuccess: () => {
+      toast.success("Logout successful!");
+      router.push("/");
+    },
+    onError: (error) => {
+      console.error("Logout failed: ", error);
+
+      const errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        "An error occurred during logout";
+
+      toast.error(errorMessage);
+    },
+  });
 }

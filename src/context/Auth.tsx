@@ -1,16 +1,25 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { USERTypes } from "@/hooks/DataTypes";
 
+// Define the shape of the state object
+interface UserState {
+  message: string | null;
+  user: USERTypes | null;
+}
+
+// Define the AuthContext type
 type AuthContextType = {
-  user: USERTypes;
-  setUser: (user: USERTypes) => void;
+  user: UserState;
+  setUser: (user: UserState) => void;
 };
 
+// Create the AuthContext with default value null
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// Custom hook to use AuthContext
 export function useAuthContext() {
   const context = useContext(AuthContext);
   if (!context) {
@@ -21,29 +30,31 @@ export function useAuthContext() {
   return context;
 }
 
-export function AuthContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [user, setUser] = useState<any>({
+// AuthContextProvider component
+export function AuthContextProvider({ children }: { children: ReactNode }) {
+  // Initialize state with the proper type
+  const [user, setUser] = useState<UserState>({
     message: null,
-    userer: null,
+    user: null,
   });
 
-  const { isLoading } = useQuery<USERTypes, AxiosError>({
+  // Fetch user data
+  const { isLoading } = useQuery<UserState, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
       const response = await axios.post("/api/users/me");
+      const data: UserState = {
+        message: response.data.message || null,
+        user: response.data.user || null,
+      };
 
-      console.log(response.data.user);
-      if (response.data)
-        setUser({ message: response.data.message, user: response.data.user });
+      setUser(data);
 
-      return response.data;
+      return data;
     },
   });
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="flex min-h-screen justify-center items-center">
@@ -57,6 +68,7 @@ export function AuthContextProvider({
     );
   }
 
+  // Provide context value
   const value: AuthContextType = {
     user,
     setUser,
