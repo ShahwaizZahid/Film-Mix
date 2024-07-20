@@ -5,7 +5,7 @@ import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { QueryClientProviderWrapper } from "@/helper/querryclient-provider";
 import { Toaster } from "react-hot-toast";
-
+import { AuthContextProvider } from "@/context/Auth";
 const inter = Inter({ subsets: ["latin"] });
 
 import { cn } from "@/lib/utils";
