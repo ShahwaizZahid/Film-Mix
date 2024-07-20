@@ -166,3 +166,25 @@ function useOTPVerifyMutation() {
     },
   });
 }
+
+function useAgainOtpMutation() {
+  return useMutation<any, AxiosError, OTPFormData>({
+    mutationKey: ["otp"],
+    mutationFn: async (data) => {
+      const res = await axios.post("/api/users/resendcode", data);
+      console.log(res.data);
+    },
+    onSuccess: () => {
+      toast.success("OTP sent again successfully!");
+    },
+    onError: (error) => {
+      console.error("Sending OTP again failed: ", error);
+
+      const errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        "An error occurred while sending OTP again";
+
+      toast.error(errorMessage);
+    },
+  });
+}
