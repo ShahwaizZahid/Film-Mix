@@ -18,7 +18,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-black text-white shadow-md">
+    <nav className="bg-black text-white shadow-md border-b-2 border-b-white">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Logo */}
         <Link href="#" className="flex items-center gap-2">
