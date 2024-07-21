@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-  console.log("aa ga");
   try {
     const userId = await getDataFromToken(request);
     console.log(userId);

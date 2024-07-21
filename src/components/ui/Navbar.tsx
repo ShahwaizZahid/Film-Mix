@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/Auth";
-
+import { ModeToggle } from "./theme";
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, setUser } = useAuthContext();
@@ -31,7 +31,7 @@ export default function Navbar() {
     }
   };
   return (
-    <nav className="bg-black text-white shadow-md border-b-2 border-b-white">
+    <nav className=" shadow-md border-b-2 border-b-black  dark:border-b-white">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Logo */}
         <Link href="#" className="flex items-center gap-2">
@@ -56,45 +56,41 @@ export default function Navbar() {
         </div>
         <div className=" md:block hidden ">
           <div className="flex justify-center items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center  gap-1 mr-9 border-none">
-                <span>Theme</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Light</DropdownMenuItem>
-                <DropdownMenuItem>Dark</DropdownMenuItem>
-                <DropdownMenuItem>System</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ModeToggle></ModeToggle>
             {/* Desktop Login Button */}
 
             {user.user ? (
               <Button
-                className="bg-primary  text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
+                className="bg-primary  text-primary-foreground px-4 py-2 rounded-md  w-full border-2 border-white mx-6"
                 onClick={handleLogout}
               >
                 Logout
               </Button>
             ) : (
-              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md w-full border-2 border-white mx-6">
                 <Link href="/login">login</Link>
               </Button>
             )}
           </div>
         </div>
-
         {/* Mobile Menu Button */}
         <Button
-          className="md:hidden flex items-center p-2 text-white"
+          className="md:hidden flex items-center p-2 bg-black"
           onClick={toggleMobileMenu}
         >
-          <img className="h-6 w-6" src="bars.svg" alt="hello" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            className="h-6 w-6  fill-white "
+          >
+            <path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+          </svg>
         </Button>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-black text-white py-4 ">
+        <div className="md:hidden  py-2 ">
           <div className="container mx-auto px-4">
             <Link href="/" className="block py-2 hover:underline">
               Home
@@ -108,26 +104,21 @@ export default function Navbar() {
             <Link href="/aboutus" className="block py-2 hover:underline">
               About Us
             </Link>
+          </div>
+          <div className="ml-10 my-4">
+            <ModeToggle></ModeToggle>
+          </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 mt-4">
-                <span>Theme</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem>Light</DropdownMenuItem>
-                <DropdownMenuItem>Dark</DropdownMenuItem>
-                <DropdownMenuItem>System</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="flex justify-center items-center">
             {user.user ? (
               <Button
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-[90%] "
                 onClick={handleLogout}
               >
                 Logout
               </Button>
             ) : (
-              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-full border-2 border-white">
+              <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-md mt-4 w-[90%] ">
                 <Link href="/login">login</Link>
               </Button>
             )}

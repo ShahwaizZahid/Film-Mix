@@ -15,12 +15,12 @@ export default function page() {
   return (
     <>
       <Navbar></Navbar>
-      <div className="animated-bg flex justify-center  text-center">
+      <div className="animated-bg flex justify-center   text-center">
         <div className="md:w-[70%] w-[90%]">
-          <h1 className="text-4xl md:text-6xl font-bold text-white my-16 ">
+          <h1 className="text-4xl md:text-6xl font-bold my-16 ">
             Welcome to MovieLand
           </h1>
-          <p className="text-lg md:text-xl text-white mb-6 animate-slide-in my-20  py-10">
+          <p className="text-lg md:text-xl mb-6 animate-slide-in my-20  py-10">
             Filmix is your go-to destination for all things movies. Discover
             detailed information about your favorite films, including cast, plot
             summaries, trailers, and reviews. Stay updated with the latest
@@ -28,10 +28,10 @@ export default function page() {
             cinema with Filmix!
           </p>
           <div className="space-x-8  my-16">
-            <Button className="border-white border-2 py-2 px-6">
+            <Button className=" border-2 py-2 px-6">
               <Link href="/movies">Get started</Link>
             </Button>
-            <Button className="border-white border-2 py-2 px-6">
+            <Button className="  py-2 px-6">
               <Link href="/contactus">Contact us</Link>
             </Button>
           </div>

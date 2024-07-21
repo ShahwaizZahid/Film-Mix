@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 import { AuthContextProvider } from "@/context/Auth";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/helper/theme-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,13 +30,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased text-white bg-slate-900",
+          "min-h-screen bg-background font-sans antialiased ",
           fontSans.variable
         )}
       >
         <QueryClientProviderWrapper>
           <AuthContextProvider>
-            {children}
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
             <Toaster />
           </AuthContextProvider>
         </QueryClientProviderWrapper>
