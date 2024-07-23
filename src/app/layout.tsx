@@ -35,17 +35,17 @@ export default function RootLayout({
         )}
       >
         <QueryClientProviderWrapper>
-          <AuthContextProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AuthContextProvider>
               {children}
-            </ThemeProvider>
-            <Toaster />
-          </AuthContextProvider>
+              <Toaster />
+            </AuthContextProvider>
+          </ThemeProvider>
         </QueryClientProviderWrapper>
       </body>
     </html>

@@ -39,31 +39,31 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   });
 
   // Fetch user data
-  const { isLoading } = useQuery<UserState, AxiosError>({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const response = await axios.post("/api/users/me");
-      const data: UserState = {
-        message: response.data.message || null,
-        user: response.data.user || null,
-      };
+  // const { isLoading } = useQuery<UserState, AxiosError>({
+  //   queryKey: ["user"],
+  //   queryFn: async () => {
+  //     const response = await axios.post("/api/users/me");
+  //     const data: UserState = {
+  //       message: response.data.message || null,
+  //       user: response.data.user || null,
+  //     };
 
-      setUser(data);
+  //     setUser(data);
 
-      return data;
-    },
-  });
+  //     return data;
+  //   },
+  // });
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen justify-center items-center">
-        <span className="loading loading-bars loading-xs">
-          loading.............
-        </span>
-      </div>
-    );
-  }
+  // // Loading state
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex min-h-screen justify-center items-center">
+  //       <span className="loading loading-bars loading-xs">
+  //         loading.............
+  //       </span>
+  //     </div>
+  //   );
+  // }
 
   // Provide context value
   const value: AuthContextType = {

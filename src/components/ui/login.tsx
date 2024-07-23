@@ -54,7 +54,7 @@ export function LoginForm() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-black text-md"
+                      className=" text-md"
                       type="email"
                       placeholder="Email"
                       {...field}
@@ -73,7 +73,7 @@ export function LoginForm() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-black text-md"
+                      className=" text-md"
                       type="password"
                       placeholder="Password"
                       {...field}

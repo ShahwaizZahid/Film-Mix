@@ -3,6 +3,7 @@ import { User } from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
+  console.log("vserify");
   try {
     await connect();
     console.log("Mongo connected");
