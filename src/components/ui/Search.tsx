@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { formSchema, FormValues } from "@/schemas/searchSchema";
-
+import { SkeletonMovieCard } from "./movieCardSkelton";
 export default function Search() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,46 +83,14 @@ export default function Search() {
       </div>
 
       <div className="grid  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12 ">
-        <MovieCard
-          title={"The Lord of the Rings: The Return of the King"}
-          year={2002}
-          poster={
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-          }
-          imdbRating={-25}
-        />{" "}
-        <MovieCard
-          title={"sakckcsasasc"}
-          year={2002}
-          poster={
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-          }
-          imdbRating={-25}
-        />{" "}
-        <MovieCard
-          title={"sakckcsasasc"}
-          year={2002}
-          poster={
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-          }
-          imdbRating={-25}
-        />{" "}
-        <MovieCard
-          title={"sakckcsasasc"}
-          year={2002}
-          poster={
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-          }
-          imdbRating={-25}
-        />{" "}
-        <MovieCard
-          title={"sakckcsasasc"}
-          year={2002}
-          poster={
-            "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-          }
-          imdbRating={-25}
-        />
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
+        <SkeletonMovieCard></SkeletonMovieCard>
       </div>
     </>
   );
