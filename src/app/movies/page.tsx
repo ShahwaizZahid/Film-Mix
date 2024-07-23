@@ -1,13 +1,12 @@
 "use client";
 import React from "react";
 import Navbar from "@/components/ui/Navbar";
-import { SelectDemo } from "@/components/ui/categorySearch";
 import Search from "@/components/ui/Search";
-export default function page() {
+import MovieCard from "@/components/ui/movieCard";
+export default function Page() {
   return (
     <>
-      <Navbar></Navbar>
-      <SelectDemo></SelectDemo>
+      <Navbar />
       <Search></Search>
     </>
   );
