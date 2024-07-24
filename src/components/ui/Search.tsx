@@ -1,15 +1,19 @@
 "use client";
-import React from "react";
-import { Search as SearchImg } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Search as SearchImg } from "lucide-react";
+import { formSchema, FormValues } from "@/schemas/searchSchema";
+import { MovieTypes } from "@/hooks/DataTypes";
+import MovieCard from "./movieCard";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import MovieCard from "./movieCard";
 import {
   Select,
   SelectContent,
@@ -20,24 +24,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { formSchema, FormValues } from "@/schemas/searchSchema";
 import { SkeletonMovieCard } from "./movieCardSkelton";
 
 export default function Search() {
-  const { isLoading, isError, isSuccess } = useQuery<any, AxiosError>({
+  const [allData, setAllData] = useState<MovieTypes[] | null>(null);
+
+  const { isLoading, isError, isSuccess, data } = useQuery<any, AxiosError>({
     queryKey: ["movies"],
     queryFn: async () => {
       const response = await axios.get("/api/movies");
-      console.log(response.data);
       return response.data;
     },
   });
-
-  if (isLoading) return <div>loading</div>;
-
-  if (isError) return <div>error</div>;
-
-  if (isSuccess) return <div>Success</div>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -46,9 +44,19 @@ export default function Search() {
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
-    console.log(data);
+  useEffect(() => {
+    if (isSuccess && data) {
+      setAllData(data.data);
+    }
+  }, [isSuccess, data]);
+
+  const onSubmit: SubmitHandler<FormValues> = async (formData) => {
+    console.log(formData);
   };
+
+  if (isError) {
+    return <div>Error occurred</div>;
+  }
 
   return (
     <>
@@ -98,19 +106,17 @@ export default function Search() {
         </div>
       </div>
 
-      <div className="grid  lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12 ">
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
-        <SkeletonMovieCard></SkeletonMovieCard>
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
+        {isLoading ? (
+          Array.from({ length: 8 }).map((_, index) => (
+            <SkeletonMovieCard key={index} />
+          ))
+        ) : allData && allData.length > 0 ? (
+          allData.map((movie) => <MovieCard key={movie._id} movie={movie} />)
+        ) : (
+          <div>No data available</div>
+        )}
       </div>
     </>
   );
 }
-
-import axios, { AxiosError } from "axios";
-import { useQuery } from "@tanstack/react-query";
