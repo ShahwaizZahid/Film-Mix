@@ -6,16 +6,9 @@ export const connect = async () => {
 
     const connection = mongoose.connection;
 
-    connection.on("connected", () => {
-      console.log("Mongo Db connected successfully");
-    });
-
-    connection.on("error", (err) => {
-      console.log("Mongo Db connected error make sure mongo is running", err);
-      process.exit();
-    });
+    console.log("Mongo connected successfully");
   } catch (e) {
     console.log("Some thing went wrong to connect DB");
-    console.log(e);
+    return;
   }
 };

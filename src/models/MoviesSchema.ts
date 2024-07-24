@@ -22,4 +22,5 @@ const movieSchema = new mongoose.Schema({
   response: { type: Boolean, default: false },
 });
 
-export const Movie = mongoose.model("Movie", movieSchema);
+export const Movie =
+  mongoose.models.Movie || mongoose.model("Movie", movieSchema);

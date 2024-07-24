@@ -22,7 +22,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { formSchema, FormValues } from "@/schemas/searchSchema";
 import { SkeletonMovieCard } from "./movieCardSkelton";
+
 export default function Search() {
+  const { isLoading, isError, isSuccess } = useQuery<any, AxiosError>({
+    queryKey: ["movies"],
+    queryFn: async () => {
+      const response = await axios.get("/api/movies");
+      console.log(response.data);
+      return response.data;
+    },
+  });
+
+  if (isLoading) return <div>loading</div>;
+
+  if (isError) return <div>error</div>;
+
+  if (isSuccess) return <div>Success</div>;
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,3 +111,6 @@ export default function Search() {
     </>
   );
 }
+
+import axios, { AxiosError } from "axios";
+import { useQuery } from "@tanstack/react-query";
