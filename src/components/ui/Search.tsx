@@ -81,6 +81,30 @@ export default function Search() {
     console.log(formData);
   };
 
+  const genres = [
+    "Action",
+    "Adventure",
+    "Animation",
+    "Biography",
+    "Comedy",
+    "Crime",
+    "Drama",
+    "Family",
+    "Fantasy",
+    "Film-Noir",
+    "History",
+    "Horror",
+    "Music",
+    "Musical",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Sport",
+    "Thriller",
+    "War",
+    "Western",
+  ];
+
   if (isError) {
     return <div>Error occurred</div>;
   }
@@ -122,11 +146,11 @@ export default function Search() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
+                {genres.map((genre) => (
+                  <SelectItem key={genre} value={genre}>
+                    {genre}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -144,10 +168,12 @@ export default function Search() {
               ))
             )}
       </div>
-      {(isLoading || isFetchingNextPage) &&
-        Array.from({ length: 4 }).map((_, index) => (
-          <SkeletonMovieCard key={index} />
-        ))}
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
+        {(isLoading || isFetchingNextPage) &&
+          Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonMovieCard key={index} />
+          ))}
+      </div>
       <div ref={observerElem} style={{ height: 1 }}></div>
     </>
   );
