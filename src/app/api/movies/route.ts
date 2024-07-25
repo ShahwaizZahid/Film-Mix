@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { Movie } from "@/models/MoviesSchema";
 
 export async function GET(request: NextRequest) {
-  console.log("aya ty va");
   try {
     await connect();
   } catch (e: any) {
