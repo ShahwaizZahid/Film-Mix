@@ -1,31 +1,29 @@
 import React from "react";
 import { Badge } from "./badge";
+import { MovieTypes } from "@/hooks/DataTypes";
+
 type MovieCardProps = {
-  title: string;
-  year: number;
-  poster: string;
-  imdbRating: number;
+  movie: MovieTypes;
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  title,
-  year,
-  poster,
-  imdbRating,
-}) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
     <div className="max-w-[300px] rounded-xl overflow-hidden shadow-lg border-2 border-black my-8 dark:border-white relative">
-      <Badge className="absolute right-0 bg-pink-400 my-1 mx-1 ">hello</Badge>
+      <Badge className="absolute right-0 bg-pink-400 my-1 mx-1">
+        IMDB: {movie.imdbRating}
+      </Badge>
       <img
         className="w-full"
-        src={
-          "	https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
-        }
-        alt={title}
+        src={movie.Poster}
+        alt={movie.Title}
+        onError={(e) => {
+          e.currentTarget.src =
+            "	https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg";
+        }}
       />
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">Title: {title}</div>
-        <p className="text-base">Released: {year}</p>
+        <div className="font-bold text-xl mb-2">Title: {movie.Title}</div>
+        <p className="text-base">Released: {movie.Year}</p>
       </div>
     </div>
   );
