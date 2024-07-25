@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
@@ -81,30 +81,6 @@ export default function Search() {
     console.log(formData);
   };
 
-  const genres = [
-    "Action",
-    "Adventure",
-    "Animation",
-    "Biography",
-    "Comedy",
-    "Crime",
-    "Drama",
-    "Family",
-    "Fantasy",
-    "Film-Noir",
-    "History",
-    "Horror",
-    "Music",
-    "Musical",
-    "Mystery",
-    "Romance",
-    "Sci-Fi",
-    "Sport",
-    "Thriller",
-    "War",
-    "Western",
-  ];
-
   if (isError) {
     return <div>Error occurred</div>;
   }
@@ -138,23 +114,6 @@ export default function Search() {
             />
           </form>
         </FormProvider>
-
-        <div className="w-full flex justify-end mb-10 md:w-fit md:justify-center md:my-0">
-          <Select>
-            <SelectTrigger className="w-[180px] my-0  border-2 border-black dark:border-white mr-10">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {genres.map((genre) => (
-                  <SelectItem key={genre} value={genre}>
-                    {genre}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
