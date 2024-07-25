@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import React, { useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search as SearchImg } from "lucide-react";
@@ -27,15 +27,7 @@ import { Input } from "@/components/ui/input";
 import { SkeletonMovieCard } from "./movieCardSkelton";
 
 export default function Search() {
-  const [allData, setAllData] = useState<MovieTypes[] | null>(null);
-
-  const { isLoading, isError, isSuccess, data } = useQuery<any, AxiosError>({
-    queryKey: ["movies"],
-    queryFn: async () => {
-      const response = await axios.get("/api/movies");
-      return response.data;
-    },
-  });
+  const observerElem = useRef<HTMLDivElement>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,11 +36,46 @@ export default function Search() {
     },
   });
 
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["movies"],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await axios.get(
+        `/api/movies?page=${pageParam}&limit=10`
+      );
+      return response.data;
+    },
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.data.length === 0) return undefined;
+      return pages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+
   useEffect(() => {
-    if (isSuccess && data) {
-      setAllData(data.data);
+    if (observerElem.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage) {
+            fetchNextPage();
+          }
+        },
+        { threshold: 1 }
+      );
+
+      observer.observe(observerElem.current);
+
+      return () => {
+        if (observerElem.current) observer.unobserve(observerElem.current);
+      };
     }
-  }, [isSuccess, data]);
+  }, [fetchNextPage, hasNextPage]);
 
   const onSubmit: SubmitHandler<FormValues> = async (formData) => {
     console.log(formData);
@@ -74,7 +101,7 @@ export default function Search() {
                   <FormControl>
                     <div className="flex justify-center items-center border-2 border-black dark:border-white rounded-3xl px-3 ">
                       <Input
-                        className="text-md ring-offset-none border-none focus:outline-none    focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0 "
+                        className="text-md ring-offset-none border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-none focus-visible:ring-offset-0 "
                         placeholder="Search"
                         {...field}
                       />
@@ -107,16 +134,21 @@ export default function Search() {
       </div>
 
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
-        {isLoading ? (
-          Array.from({ length: 8 }).map((_, index) => (
-            <SkeletonMovieCard key={index} />
-          ))
-        ) : allData && allData.length > 0 ? (
-          allData.map((movie) => <MovieCard key={movie._id} movie={movie} />)
-        ) : (
-          <div>No data available</div>
-        )}
+        {isLoading && !data
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonMovieCard key={index} />
+            ))
+          : data?.pages.map((page: any) =>
+              page.data.map((movie: MovieTypes) => (
+                <MovieCard key={movie._id} movie={movie} />
+              ))
+            )}
       </div>
+      {(isLoading || isFetchingNextPage) &&
+        Array.from({ length: 4 }).map((_, index) => (
+          <SkeletonMovieCard key={index} />
+        ))}
+      <div ref={observerElem} style={{ height: 1 }}></div>
     </>
   );
 }

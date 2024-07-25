@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { Movie } from "@/models/MoviesSchema";
 
 export async function GET(request: NextRequest) {
-  console.log("Request received", process.env.MONGO_URL);
-
+  console.log("aya ty va");
   try {
     await connect();
-    console.log("MongoDB connected successfully");
   } catch (e: any) {
     console.error("Error in MongoDB connection", e);
     return NextResponse.json(
@@ -18,9 +16,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const { searchParams } = new URL(request.url);
+
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
-
+    console.log("page", page, limit);
     if (isNaN(page) || page < 1) {
       throw new Error("Invalid page number. Page must be a positive integer.");
     }
@@ -31,7 +30,6 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     const movies = await Movie.find().skip(skip).limit(limit).lean();
-    console.log("Movies fetched successfully:", movies);
 
     return NextResponse.json({
       message: "Movies fetched successfully",
