@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+  console.log("rea");
   try {
     const reqBody = await request.json();
     console.log(reqBody);
