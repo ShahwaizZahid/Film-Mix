@@ -1,12 +1,16 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./movieCard";
 import { SkeletonMovieCard } from "./movieCardSkelton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { MovieTypes } from "@/hooks/DataTypes";
+import SearchForm from "./Search";
+import Search from "@/app/movies/page";
 
-export default function MoviesList({ search }: any) {
+export default function MoviesList() {
   const observerElem = useRef<HTMLDivElement>(null);
+  const [movies, setMovies] = useState<MovieTypes[]>([]);
 
   const {
     data,
@@ -15,12 +19,13 @@ export default function MoviesList({ search }: any) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isSuccess,
   } = useInfiniteQuery({
-    queryKey: ["movies", search],
+    queryKey: ["movies"],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await axios.get(
-        `/api/movies?page=${pageParam}&limit=10&search=${search || ""}`
-      );
+      const response = await axios.get(`/api/movies`, {
+        params: { page: pageParam, limit: 10 },
+      });
       return response.data;
     },
     getNextPageParam: (lastPage) => {
@@ -29,6 +34,21 @@ export default function MoviesList({ search }: any) {
     },
     initialPageParam: 1,
   });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      const newMovies = data.pages.flatMap((page) => page.data);
+
+      // Deduplicate based on _id
+      setMovies((prevMovies) => {
+        const movieIds = new Set(prevMovies.map((movie) => movie._id));
+        return [
+          ...prevMovies,
+          ...newMovies.filter((movie) => !movieIds.has(movie._id)),
+        ];
+      });
+    }
+  }, [isSuccess, data]);
 
   useEffect(() => {
     if (observerElem.current && hasNextPage) {
@@ -55,21 +75,18 @@ export default function MoviesList({ search }: any) {
 
   return (
     <>
+      {/* <Search></Search> */}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
-        {(isLoading && !data) || isFetchingNextPage
+        {(isLoading && movies.length === 0) || isFetchingNextPage
           ? Array.from({ length: 8 }).map((_, index) => (
               <SkeletonMovieCard key={index} />
             ))
-          : data?.pages.map((page) =>
-              page.data.map((movie: any) => (
-                <MovieCard key={movie._id} movie={movie} />
-              ))
-            )}
+          : movies.map((movie) => <MovieCard key={movie._id} movie={movie} />)}
       </div>
       <div
         ref={observerElem}
         style={{ height: 1 }}
-        className=" text-white dark:text-black"
+        className="text-white dark:text-black"
       >
         .
       </div>
