@@ -1,12 +1,7 @@
-"use client";
-
 import { z } from "zod";
 
-export const formSchema = z.object({
-  search: z
-    .string()
-    .min(2, "Username must be at least 2 characters.")
-    .max(50, "Username must be at most 50 characters."),
+export const searchSchema = z.object({
+  search: z.string().min(1, "Search query is required"),
 });
 
-export type FormValues = z.infer<typeof formSchema>;
+export type SearchFormValues = z.infer<typeof searchSchema>;

@@ -3,6 +3,7 @@ import { Movie } from "@/models/MoviesSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
+  console.log("re");
   try {
     await connect();
     console.log("Connected to MongoDB");
@@ -29,10 +30,15 @@ export async function POST(request: NextRequest) {
     const movie = await Movie.find({ Title: title });
     console.log(movie);
     if (movie.length <= 0) {
-      return NextResponse.json({ message: "Movie not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "not found any movie" },
+        { status: 404 }
+      );
     }
-    console.log("aa");
-    return NextResponse.json(movie, { status: 200 });
+    return NextResponse.json(
+      { movie: movie, message: "find this movie" },
+      { status: 200 }
+    );
   } catch (e: any) {
     console.error("Error in MongoDB operation", e);
     return NextResponse.json(
