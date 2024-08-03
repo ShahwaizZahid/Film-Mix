@@ -16,11 +16,9 @@ export async function POST(request: NextRequest) {
     );
   }
   try {
-    // Parse the request body
     const reqBody = await request.json();
     const { email = "", password = "", username = "" } = reqBody;
 
-    // Check if a user with the same email exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser && !existingUser.isVerified) {
@@ -37,7 +35,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate email and password
     if (!email || typeof email !== "string") {
       return NextResponse.json({ message: "Invalid email" }, { status: 400 });
     }
@@ -49,10 +46,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create new user
     const newUser = new User({
       username,
       email,
@@ -60,10 +55,9 @@ export async function POST(request: NextRequest) {
       isVerified: false,
       isAdmin: false,
       verifyToken: Math.floor(100000 + Math.random() * 900000),
-      verifyTokenExpiry: Date.now() + 2 * 24 * 60 * 60 * 1000, // 2 days expiry
+      verifyTokenExpiry: Date.now() + 2 * 24 * 60 * 60 * 1000,
     });
 
-    // Save user to database
     try {
       await newUser.save();
     } catch (e) {
@@ -73,7 +67,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send verification email
     try {
       await sendVerificationEmail({
         email: newUser.email,

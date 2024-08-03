@@ -10,9 +10,7 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchSubmit = async (data: { search: string }) => {
-    console.log(data);
     const res = await searchMutation.mutateAsync({ title: data.search });
-    console.log(res);
     setSearchQuery(data.search);
   };
 

@@ -1,4 +1,3 @@
-// import { GMAIL_LINK } from "../../config";
 "use client";
 
 import Navbar from "@/components/ui/Navbar";

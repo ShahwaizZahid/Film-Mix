@@ -6,7 +6,6 @@ export async function POST(request: NextRequest) {
   console.log("vserify");
   try {
     await connect();
-    console.log("Mongo connected");
   } catch (e) {
     console.log("Error in Mongo connection", e);
     return NextResponse.json(
@@ -22,7 +21,6 @@ export async function POST(request: NextRequest) {
     verifyTokenExpiry: { $gt: new Date() },
   });
 
-  console.log("user", user);
   if (!user) {
     return NextResponse.json(
       { message: "Invalid or expired validation code." },
@@ -42,7 +40,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (e: any) {
-    console.error("Error verifying email:", e);
+    console.error("Error verifying email:");
     return NextResponse.json({ message: e.message }, { status: 500 });
   }
 }

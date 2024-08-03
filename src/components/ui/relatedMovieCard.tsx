@@ -1,6 +1,5 @@
-// components/ui/RelatedMovieCard.tsx
 import React from "react";
-import { Badge } from "./badge"; // Ensure the Badge component is correctly imported
+import { Badge } from "./badge";
 
 export default function RelatedMovieCard() {
   return (

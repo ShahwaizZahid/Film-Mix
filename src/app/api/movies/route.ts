@@ -18,7 +18,6 @@ export async function GET(request: NextRequest) {
 
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
-    console.log("page", page, limit);
     if (isNaN(page) || page < 1) {
       throw new Error("Invalid page number. Page must be a positive integer.");
     }
@@ -29,7 +28,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     const movies = await Movie.find().skip(skip).limit(limit).lean();
-
+    console.log("succfully fetch all movies");
     return NextResponse.json({
       message: "Movies fetched successfully",
       data: movies,
@@ -37,7 +36,7 @@ export async function GET(request: NextRequest) {
       limit,
     });
   } catch (e: any) {
-    console.error("Error fetching movies", e);
+    console.error("Error fetching movies all movies route");
 
     const status = e.message.includes("Invalid") ? 400 : 500;
     return NextResponse.json(

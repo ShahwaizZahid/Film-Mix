@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    console.log("Connected to MongoDB");
   } catch (e: any) {
     console.error("Error in MongoDB connection", e);
     return NextResponse.json(
@@ -17,9 +16,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const reqBody = await request.json();
-    console.log("Request body", reqBody);
     const { id } = reqBody;
-    console.log("Received ID:", id);
 
     if (!id) {
       return NextResponse.json(
@@ -37,15 +34,13 @@ export async function POST(request: NextRequest) {
 
     const movieId = new mongoose.Types.ObjectId(id);
     const movie = await Movie.findOne({ _id: movieId });
-    console.log("Found movie:", movie);
 
     if (!movie) {
       return NextResponse.json({ message: "No movie found" }, { status: 404 });
     }
 
     const relatedMovies = await Movie.find({ Genre: movie.Genre });
-    console.log("Found related movies:", relatedMovies.length);
-
+    console.log("successfully search by id movie and related movies");
     return NextResponse.json(
       {
         movie: movie,

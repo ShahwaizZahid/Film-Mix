@@ -3,10 +3,8 @@ import { Movie } from "@/models/MoviesSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
-  console.log("re");
   try {
     await connect();
-    console.log("Connected to MongoDB");
   } catch (e: any) {
     console.error("Error in MongoDB connection", e);
     return NextResponse.json(
@@ -17,7 +15,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const reqBody = await request.json();
-    console.log("e", reqBody);
     const { title } = reqBody;
 
     if (!title) {
@@ -28,19 +25,19 @@ export async function POST(request: NextRequest) {
     }
 
     const movie = await Movie.findOne({ Title: title });
-    console.log(movie);
     if (!movie) {
       return NextResponse.json(
         { message: "not found any movie" },
         { status: 404 }
       );
     }
+    console.log("successfully search movie");
     return NextResponse.json(
       { movie: movie, message: "find this movie" },
       { status: 200 }
     );
   } catch (e: any) {
-    console.error("Error in MongoDB operation", e);
+    console.error("Error in MongoDB operation search route");
     return NextResponse.json(
       { message: "Internal server error", error: e.message },
       { status: 500 }

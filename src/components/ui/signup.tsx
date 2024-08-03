@@ -35,9 +35,7 @@ export function SignupForm() {
   const signupMutation = useSignup();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
-    console.log(data);
     const res = await signupMutation.mutateAsync(data);
-    console.log("measss", res);
     toast.success(res);
   };
 
@@ -136,7 +134,6 @@ function useSignup() {
     mutationKey: ["signup"],
     mutationFn: async (data) => {
       const res = await axios.post("/api/users/signup", data);
-      console.log(res.data.message);
       return res.data.message;
     },
     onSuccess: (_, { email }) => {

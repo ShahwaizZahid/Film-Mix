@@ -44,8 +44,6 @@ export function InputOTPForm() {
   const OTPVerifyMutation = useOTPVerifyMutation();
   const OtpAgainMutation = useAgainOtpMutation();
 
-  //   const OtpAgainMutation = useOAgainOtpMutation();
-
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (timer > 0) {

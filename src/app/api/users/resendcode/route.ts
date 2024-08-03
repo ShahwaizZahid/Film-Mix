@@ -15,14 +15,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  console.log("aa");
   const reqBody = await request.json();
-  console.log(reqBody);
   const { email = "" } = reqBody;
   const user = await User.findOne({ email: email });
-  console.log("usr", user);
   if (!user) {
-    console.log("you are unable to resend code");
     return NextResponse.json(
       { message: "you are unable to resend code" },
       { status: 400 }
@@ -50,7 +46,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Error while logging in: ", err);
+    console.error("Error while resend otp");
     return NextResponse.json(
       {
         message:

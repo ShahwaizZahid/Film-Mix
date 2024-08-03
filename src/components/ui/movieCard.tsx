@@ -12,7 +12,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
   const handleCardClick = async (movie: MovieTypes) => {
     const res = await searchMutation.mutateAsync({ title: movie.Title });
-    console.log("Selected movie:", movie);
   };
 
   return (
