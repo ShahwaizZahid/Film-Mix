@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles/globals.css */
+/* styles/globals.css */
+@import url("slick-carousel/slick/slick.css");
+@import url("slick-carousel/slick/slick-theme.css");
+
+.slider-container {
+  margin: auto;
+  position: relative;
+  width: 90%;
+  height: fit-content;
+  padding: 1rem 1rem; /* Add horizontal padding to avoid issues with slider dots */
+}
+
+.slick-slide {
+  margin: 0px; /* Adjust the margin between slides as needed */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

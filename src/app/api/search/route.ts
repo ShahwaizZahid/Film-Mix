@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     console.log("Request body", reqBody);
     const { id } = reqBody;
-    console.log(id);
+    console.log("Received ID:", id);
+
     if (!id) {
       return NextResponse.json(
         { message: "ID field is required in the request body" },
@@ -36,14 +37,21 @@ export async function POST(request: NextRequest) {
 
     const movieId = new mongoose.Types.ObjectId(id);
     const movie = await Movie.findOne({ _id: movieId });
-    console.log(movie);
+    console.log("Found movie:", movie);
 
     if (!movie) {
       return NextResponse.json({ message: "No movie found" }, { status: 404 });
     }
 
+    const relatedMovies = await Movie.find({ Genre: movie.Genre });
+    console.log("Found related movies:", relatedMovies.length);
+
     return NextResponse.json(
-      { movie: movie, message: "Movie found" },
+      {
+        movie: movie,
+        relatedMovies: relatedMovies,
+        message: "Movie and related movies found",
+      },
       { status: 200 }
     );
   } catch (e: any) {
