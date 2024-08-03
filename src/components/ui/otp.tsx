@@ -126,9 +126,13 @@ export function InputOTPForm() {
                 )}
               />
               <div className="mt-4  text-end">
-                <Button onClick={handleResendOTP} disabled={!isResendEnabled}>
+                <button
+                  onClick={handleResendOTP}
+                  className="disable:text-red-400"
+                  disabled={!isResendEnabled}
+                >
                   {isResendEnabled ? "Resend OTP" : `Resend OTP in ${timer}s`}
-                </Button>
+                </button>
               </div>
             </form>
           </Form>
@@ -151,7 +155,7 @@ export function InputOTPForm() {
 }
 
 function useOTPVerifyMutation() {
-  // const navigate = useNavigate();
+  const router = useRouter();
 
   return useMutation<any, AxiosError, OTPFormData>({
     mutationKey: ["otp"],
@@ -162,6 +166,7 @@ function useOTPVerifyMutation() {
     },
     onSuccess: (_, { email }) => {
       console.log("successfully verify", email);
+      router.push(`/login`);
     },
     onError: (error) => {
       console.error("OTP verification failed: ", error.message);
@@ -176,7 +181,6 @@ function useOTPVerifyMutation() {
 }
 
 function useAgainOtpMutation() {
-  const router = useRouter();
   return useMutation<any, AxiosError, { email: string }>({
     mutationKey: ["otp"],
     mutationFn: async (data) => {
@@ -185,7 +189,6 @@ function useAgainOtpMutation() {
     },
     onSuccess: () => {
       toast.success("OTP sent again successfully!");
-      router.push(`/login`);
     },
     onError: (error) => {
       console.error("Sending OTP again failed: ", error);

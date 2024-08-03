@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LoginFormData } from "@/hooks/DataTypes";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
-
+import { useAuthContext } from "@/context/Auth";
 import {
   Form,
   FormControl,
@@ -109,6 +109,8 @@ export function LoginForm() {
 import { useRouter, useSearchParams } from "next/navigation";
 
 function useLogin() {
+  const { setUser } = useAuthContext()!;
+
   const router = useRouter();
   return useMutation<any, AxiosError, LoginFormData>({
     mutationKey: ["login"],
@@ -116,8 +118,10 @@ function useLogin() {
       const res = await axios.post("/api/users/login", { email, password });
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       router.push(`/`);
+      console.log("successfully set this user", data.user);
+      setUser(data);
     },
     onError: (error) => {
       console.error("Login failed: ", error);

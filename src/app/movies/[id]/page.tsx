@@ -71,9 +71,9 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      <div className="bg-gray-900 overflow-hidden">
-        <div className="md:h-screen h-fit bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className=" overflow-hidden">
+        <div className="md:h-screen  h-fit flex flex-col items-center justify-center p-4">
+          <div className="w-full max-w-3xl rounded-lg shadow-lg p-6  border-2 border-black dark:border-none ">
             <h1 className="text-3xl font-bold mb-4">{movie?.Title}</h1>
             <div className="flex flex-col md:flex-row">
               <img

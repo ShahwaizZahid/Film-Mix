@@ -94,7 +94,7 @@ export function SignupForm() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-black text-md"
+                      className=" text-md"
                       type="password"
                       placeholder="Password"
                       {...field}

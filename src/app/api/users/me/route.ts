@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   try {
     const userId = await getDataFromToken(request);
     console.log(userId);
-    const user = await User.findOne({ _id: userId }).select("-password");
+    const user = await User.findOne({ _id: userId }).select("email username");
     console.log(user);
     if (!user) {
       return NextResponse.json({ message: "invalid token" }, { status: 400 });

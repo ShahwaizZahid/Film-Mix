@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export default function page() {
   const { user } = useAuthContext();
   useEffect(() => {
-    console.log(user);
+    console.log("this thimw user", user);
   }, [user]);
 
   return (

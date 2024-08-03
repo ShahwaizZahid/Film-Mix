@@ -19,7 +19,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     <div
       className="max-w-[300px] rounded-xl overflow-hidden shadow-lg border-2 border-black my-4 dark:border-white relative "
       onClick={() => {
-        toast.loading("wait");
+        toast.loading("Please wait...", {
+          duration: 1000,
+        });
         handleCardClick(movie);
       }}
     >

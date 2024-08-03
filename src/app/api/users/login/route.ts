@@ -52,7 +52,14 @@ export async function POST(request: NextRequest) {
     const jwt = await generateToken(passedUser);
 
     const response = NextResponse.json(
-      { message: "Login successfully", success: true },
+      {
+        message: "Login successfully",
+        user: {
+          _id: user._id,
+          email: user.email,
+          username: user.username,
+        },
+      },
       { status: 200 }
     );
 
