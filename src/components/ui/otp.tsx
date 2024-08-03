@@ -11,7 +11,7 @@ import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { OTPFormData } from "@/hooks/DataTypes";
 import toast from "react-hot-toast";
-
+import { LoaderPinwheel } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -38,7 +38,7 @@ export function InputOTPForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(5);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
 
   const OTPVerifyMutation = useOTPVerifyMutation();
@@ -66,6 +66,8 @@ export function InputOTPForm() {
   }, [form.watch("pin")]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log("otp", data);
+
     const newData: any = { token: data.pin, email: email };
     const res = await OTPVerifyMutation.mutateAsync(newData);
     console.log(res);
@@ -125,15 +127,19 @@ export function InputOTPForm() {
                   </FormItem>
                 )}
               />
-              <div className="mt-4  text-end">
-                <button
-                  onClick={handleResendOTP}
-                  className="disable:text-red-400"
-                  disabled={!isResendEnabled}
-                >
-                  {isResendEnabled ? "Resend OTP" : `Resend OTP in ${timer}s`}
-                </button>
-              </div>
+              {OTPVerifyMutation.isPending || OtpAgainMutation.isPending ? (
+                <LoaderPinwheel className="animate-spin" />
+              ) : (
+                <div className="mt-4  text-end">
+                  <button
+                    onClick={handleResendOTP}
+                    className="disabled:text-gray-300"
+                    disabled={!isResendEnabled}
+                  >
+                    {isResendEnabled ? "Resend OTP" : `Resend OTP in ${timer}s`}
+                  </button>
+                </div>
+              )}
             </form>
           </Form>
         </div>

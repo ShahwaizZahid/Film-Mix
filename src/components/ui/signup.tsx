@@ -9,7 +9,7 @@ import { SignupFormData } from "@/hooks/DataTypes";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { LoaderPinwheel } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -43,7 +43,7 @@ export function SignupForm() {
 
   return (
     <>
-      <div className=" py-4 px-6 md:w-[30%] w-[90%] border-2 border-white rounded-3xl">
+      <div className=" py-4 px-6 md:w-[30%] w-[90%] border-2 border-black rounded-3xl">
         <div className="items-center py-3 flex justify-center text-3xl font-bold">
           Signup
         </div>
@@ -110,7 +110,11 @@ export function SignupForm() {
                 type="submit"
                 className="border-2 border-white hover:bg-white hover:text-black"
               >
-                {!signupMutation.isPending ? "Signup" : <div>Loading...</div>}
+                {!signupMutation.isPending ? (
+                  "Signup"
+                ) : (
+                  <LoaderPinwheel className="animate-spin" />
+                )}
               </Button>
             </div>
           </form>

@@ -3,7 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { USERTypes } from "@/hooks/DataTypes";
-
+import { LoaderPinwheel } from "lucide-react";
 // Define the shape of the state object
 interface UserState {
   message: string | null;
@@ -58,9 +58,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   if (isLoading) {
     return (
       <div className="flex min-h-screen justify-center items-center">
-        <span className="loading loading-bars loading-xs">
-          loading.............
-        </span>
+        <LoaderPinwheel className="animate-spin w-28 h-28" />
       </div>
     );
   }

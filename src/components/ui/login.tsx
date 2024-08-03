@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { formSchema, FormValues } from "@/schemas/loginSchema";
-
+import { LoaderPinwheel } from "lucide-react";
 export function LoginForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -40,7 +40,7 @@ export function LoginForm() {
 
   return (
     <>
-      <div className=" py-4 px-6 md:w-[30%] w-[90%] border-2 border-white rounded-3xl">
+      <div className=" py-4 px-6 md:w-[30%] w-[90%]  border-2 border-black dark:border-white rounded-3xl">
         <div className="items-center py-3 flex justify-center text-3xl font-bold">
           Login
         </div>
@@ -89,8 +89,11 @@ export function LoginForm() {
                 type="submit"
                 className="border-2 border-white hover:bg-white hover:text-black"
               >
-                Login
-                {/* {!signupMutation.isPending ? "Signup" : <div>Loading...</div>} */}
+                {!loginMutation.isPending ? (
+                  "Login"
+                ) : (
+                  <LoaderPinwheel className="animate-spin" />
+                )}
               </Button>
             </div>
           </form>
@@ -119,7 +122,7 @@ function useLogin() {
       return res.data;
     },
     onSuccess: (data) => {
-      router.push(`/`);
+      router.push(`/movies`);
       console.log("successfully set this user", data.user);
       setUser(data);
     },
