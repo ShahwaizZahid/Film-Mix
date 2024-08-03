@@ -7,8 +7,16 @@ type MovieCardProps = {
 };
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+  const handleCardClick = (movie: MovieTypes) => {
+    console.log("Selected movie:", movie);
+  };
   return (
-    <div className="max-w-[300px] rounded-xl overflow-hidden shadow-lg border-2 border-black my-8 dark:border-white relative">
+    <div
+      className="max-w-[300px] rounded-xl overflow-hidden shadow-lg border-2 border-black my-8 dark:border-white relative"
+      onClick={() => {
+        handleCardClick(movie);
+      }}
+    >
       <Badge className="absolute right-0 bg-pink-400 my-1 mx-1">
         IMDB: {movie.imdbRating}
       </Badge>
