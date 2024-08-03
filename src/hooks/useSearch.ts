@@ -20,7 +20,6 @@ export function useSearch() {
     },
     onSuccess: (data) => {
       console.log("Search successful: ", data.movie._id);
-      toast.success(data.message);
       router.push(`/movies/${data.movie._id}`);
     },
     onError: (error) => {

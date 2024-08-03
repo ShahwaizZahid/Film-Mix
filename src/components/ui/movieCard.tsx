@@ -1,13 +1,17 @@
 import React from "react";
 import { Badge } from "./badge";
 import { MovieTypes } from "@/hooks/DataTypes";
-
+import useSearch from "@/hooks/useSearch";
 type MovieCardProps = {
   movie: MovieTypes;
 };
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  const handleCardClick = (movie: MovieTypes) => {
+  const searchMutation = useSearch();
+
+  const handleCardClick = async (movie: MovieTypes) => {
+    const res = await searchMutation.mutateAsync({ title: movie.Title });
+
     console.log("Selected movie:", movie);
   };
   return (
