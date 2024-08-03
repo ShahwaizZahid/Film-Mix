@@ -6,7 +6,6 @@ import { getDataFromToken } from "@/helper/getDataFromToken";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    console.log("Mongo connected");
   } catch (e) {
     console.log("Error in Mongo connection", e);
     return NextResponse.json(
@@ -16,13 +15,17 @@ export async function POST(request: NextRequest) {
   }
   try {
     const userId = await getDataFromToken(request);
-    console.log(userId);
+    if (!userId) {
+      return NextResponse.json(
+        { message: "not a user", user: null },
+        { status: 400 }
+      );
+    }
     const user = await User.findOne({ _id: userId }).select("email username");
     console.log(user);
     if (!user) {
       return NextResponse.json({ message: "invalid token" }, { status: 400 });
     }
-    console.log("successfull working me ", user);
     return NextResponse.json(
       { message: "User found", user: user },
       { status: 200 }
