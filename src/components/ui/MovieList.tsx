@@ -5,9 +5,6 @@ import { SkeletonMovieCard } from "./movieCardSkelton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MovieTypes } from "@/hooks/DataTypes";
-import SearchForm from "./Search";
-import Search from "@/app/movies/page";
-
 export default function MoviesList() {
   const observerElem = useRef<HTMLDivElement>(null);
   const [movies, setMovies] = useState<MovieTypes[]>([]);
@@ -75,7 +72,6 @@ export default function MoviesList() {
 
   return (
     <>
-      {/* <Search></Search> */}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
         {(isLoading && movies.length === 0) || isFetchingNextPage
           ? Array.from({ length: 8 }).map((_, index) => (

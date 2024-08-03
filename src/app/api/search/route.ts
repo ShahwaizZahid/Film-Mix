@@ -1,9 +1,9 @@
 import { connect } from "@/dbconfig/dbconfig";
 import { Movie } from "@/models/MoviesSchema";
 import { NextResponse, NextRequest } from "next/server";
+import mongoose from "mongoose";
 
 export async function POST(request: NextRequest) {
-  console.log("re");
   try {
     await connect();
     console.log("Connected to MongoDB");
@@ -17,26 +17,33 @@ export async function POST(request: NextRequest) {
 
   try {
     const reqBody = await request.json();
-    console.log("e", reqBody);
-    const { title } = reqBody;
-
-    if (!title) {
+    console.log("Request body", reqBody);
+    const { id } = reqBody;
+    console.log(id);
+    if (!id) {
       return NextResponse.json(
-        { message: "Title field is required in the request body" },
+        { message: "ID field is required in the request body" },
         { status: 400 }
       );
     }
 
-    const movie = await Movie.findOne({ Title: title });
-    console.log(movie);
-    if (!movie) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
-        { message: "not found any movie" },
-        { status: 404 }
+        { message: "Invalid ID format" },
+        { status: 400 }
       );
     }
+
+    const movieId = new mongoose.Types.ObjectId(id);
+    const movie = await Movie.findOne({ _id: movieId });
+    console.log(movie);
+
+    if (!movie) {
+      return NextResponse.json({ message: "No movie found" }, { status: 404 });
+    }
+
     return NextResponse.json(
-      { movie: movie, message: "find this movie" },
+      { movie: movie, message: "Movie found" },
       { status: 200 }
     );
   } catch (e: any) {
