@@ -8,7 +8,6 @@ export const getDataFromToken = (request: NextRequest) => {
     const decodedToken = verifyToken(token);
     return decodedToken;
   } catch (e: any) {
-    // throw new Error(e.message);
     console.log("user not found");
   }
 };
