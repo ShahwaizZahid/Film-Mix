@@ -38,7 +38,7 @@ export function InputOTPForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(60);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
 
   const OTPVerifyMutation = useOTPVerifyMutation();
