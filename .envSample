@@ -1,0 +1,15 @@
+# MongoDB URL
+MONGO_URL=mongodb+srv://<username>:<password>@<cluster-address>/<database>?retryWrites=true&w=majority&appName=<appName>
+
+# JWT Secret
+JWT_SECRET=<your-jwt-secret>
+
+# API URL
+API_URL=http://localhost:3000/api
+
+# SMTP Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SERVICE=gmail
+SMTP_USER=<your-email>
+SMTP_PASSWORD=<your-smtp-password>
