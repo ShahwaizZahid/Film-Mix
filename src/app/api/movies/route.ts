@@ -6,7 +6,6 @@ export async function GET(request: NextRequest) {
   try {
     await connect();
   } catch (e: any) {
-    console.error("Error in MongoDB connection", e);
     return NextResponse.json(
       { message: "Database connection error", error: e.message },
       { status: 500 }
@@ -28,7 +27,6 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     const movies = await Movie.find().skip(skip).limit(limit).lean();
-    console.log("succfully fetch all movies");
     return NextResponse.json({
       message: "Movies fetched successfully",
       data: movies,
@@ -36,8 +34,6 @@ export async function GET(request: NextRequest) {
       limit,
     });
   } catch (e: any) {
-    console.error("Error fetching movies all movies route");
-
     const status = e.message.includes("Invalid") ? 400 : 500;
     return NextResponse.json(
       { message: "Error fetching movies", error: e.message },

@@ -6,9 +6,7 @@ import { sendVerificationEmail } from "@/helper/sendMailer";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    console.log("Mongo connected");
   } catch (e) {
-    console.log("Error in Mongo connection", e);
     return NextResponse.json(
       { message: "Database connection error" },
       { status: 500 }
@@ -31,7 +29,6 @@ export async function POST(request: NextRequest) {
   try {
     await user.save();
   } catch (e) {
-    console.log("error in save user");
     return NextResponse.json({ message: "Server error " }, { status: 500 });
   }
 
@@ -40,13 +37,11 @@ export async function POST(request: NextRequest) {
       email,
       validationCode: user.verifyToken,
     });
-    console.log("successfully sent email");
     return NextResponse.json(
       { message: "Email sent successfully." },
       { status: 200 }
     );
   } catch (err) {
-    console.error("Error while resend otp");
     return NextResponse.json(
       {
         message:

@@ -7,9 +7,7 @@ import { generateToken } from "@/helper/jwt";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    console.log("Mongo connected");
   } catch (e) {
-    console.log("Error in Mongo connection", e);
     return NextResponse.json(
       { message: "Database connection error" },
       { status: 500 }
@@ -64,11 +62,8 @@ export async function POST(request: NextRequest) {
 
     response.cookies.set("token", jwt);
 
-    console.log("Successfully logged in and created session in MongoDB");
-
     return response;
   } catch (err: any) {
-    console.error("Error while logging in: ", err);
     NextResponse.json({ message: err.message }, { status: 500 });
   }
 }

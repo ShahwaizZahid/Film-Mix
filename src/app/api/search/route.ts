@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   try {
     await connect();
   } catch (e: any) {
-    console.error("Error in MongoDB connection", e);
     return NextResponse.json(
       { message: "Database connection error", error: e.message },
       { status: 500 }
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
     }
 
     const relatedMovies = await Movie.find({ Genre: movie.Genre });
-    console.log("successfully search by id movie and related movies");
     return NextResponse.json(
       {
         movie: movie,
@@ -50,7 +48,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (e: any) {
-    console.error("Error in MongoDB operation", e);
     return NextResponse.json(
       { message: "Internal server error", error: e.message },
       { status: 500 }

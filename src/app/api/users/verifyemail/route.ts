@@ -3,11 +3,9 @@ import { User } from "@/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  console.log("vserify");
   try {
     await connect();
   } catch (e) {
-    console.log("Error in Mongo connection", e);
     return NextResponse.json(
       { message: "Database connection error" },
       { status: 500 }
@@ -34,13 +32,11 @@ export async function POST(request: NextRequest) {
 
   try {
     await user.save();
-    console.log("successfully verify token");
     return NextResponse.json(
       { message: "Email verified successfully." },
       { status: 200 }
     );
   } catch (e: any) {
-    console.error("Error verifying email:");
     return NextResponse.json({ message: e.message }, { status: 500 });
   }
 }

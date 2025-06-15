@@ -7,9 +7,7 @@ import { sendVerificationEmail } from "@/helper/sendMailer";
 export async function POST(request: NextRequest) {
   try {
     await connect();
-    console.log("Mongo connected");
   } catch (e) {
-    console.log("Error in Mongo connection", e);
     return NextResponse.json(
       { message: "Database connection error" },
       { status: 500 }
@@ -72,7 +70,6 @@ export async function POST(request: NextRequest) {
         email: newUser.email,
         validationCode: newUser.verifyToken,
       });
-      console.log("Successfully sent email");
       return NextResponse.json(
         {
           message:

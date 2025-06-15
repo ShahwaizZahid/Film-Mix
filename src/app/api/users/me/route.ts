@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
   try {
     await connect();
   } catch (e) {
-    console.log("Error in Mongo connection", e);
     return NextResponse.json(
       { message: "Database connection error" },
       { status: 500 }
