@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import MoviesList from "@/components/ui/MovieList";
 import Navbar from "@/components/ui/Navbar";
 import SearchForm from "@/components/ui/Search";
-import useSearch from "@/hooks/useSearch"; // Adjust the import path as needed
+import useSearch from "@/hooks/useSearch";
 
 export default function Page() {
   const searchMutation = useSearch();

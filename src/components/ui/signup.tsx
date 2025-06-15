@@ -55,7 +55,7 @@ export function SignupForm() {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-black text-md"
+                      className=" text-md"
                       placeholder="Username"
                       {...field}
                     />
@@ -73,7 +73,7 @@ export function SignupForm() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-black text-md"
+                      className=" text-md"
                       type="email"
                       placeholder="Email"
                       {...field}
