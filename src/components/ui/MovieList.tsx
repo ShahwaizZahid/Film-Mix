@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import MovieCard from "./movieCard";
@@ -5,6 +6,7 @@ import { SkeletonMovieCard } from "./movieCardSkelton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MovieTypes } from "@/hooks/DataTypes";
+
 export default function MoviesList() {
   const observerElem = useRef<HTMLDivElement>(null);
   const [movies, setMovies] = useState<MovieTypes[]>([]);
@@ -67,25 +69,47 @@ export default function MoviesList() {
   }, [fetchNextPage, hasNextPage]);
 
   if (isError) {
-    return <div>Error occurred</div>;
+    return (
+      <div className="flex justify-center items-center min-h-[200px] text-lg font-semibold text-red-500">
+        Error occurred while fetching movies.
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 place-items-center mt-12">
-        {(isLoading && movies.length === 0) || isFetchingNextPage
-          ? Array.from({ length: 8 }).map((_, index) => (
-              <SkeletonMovieCard key={index} />
-            ))
-          : movies.map((movie) => <MovieCard key={movie._id} movie={movie} />)}
+      <div className="w-full px-2 md:px-8">
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-8 place-items-center mt-12">
+          {(isLoading && movies.length === 0) || isFetchingNextPage
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <SkeletonMovieCard key={index} />
+              ))
+            : movies.map((movie) => (
+                <MovieCard key={movie._id} movie={movie} />
+              ))}
+        </div>
       </div>
       <div
         ref={observerElem}
         style={{ height: 1 }}
         className="text-white dark:text-black"
       >
-        .
+        {/* Infinite scroll trigger */}
       </div>
+      {isFetchingNextPage && (
+        <div className="flex justify-center items-center py-8">
+          <span className="animate-pulse text-pink-500 font-semibold text-lg">
+            Loading more movies...
+          </span>
+        </div>
+      )}
+      {!hasNextPage && movies.length > 0 && (
+        <div className="flex justify-center items-center py-8">
+          <span className="text-muted-foreground text-sm">
+            You’ve reached the end of the list.
+          </span>
+        </div>
+      )}
     </>
   );
 }

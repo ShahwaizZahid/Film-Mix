@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,11 +12,10 @@ import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { OTPFormData } from "@/hooks/DataTypes";
 import toast from "react-hot-toast";
-import { LoaderPinwheel } from "lucide-react";
+import { LoaderPinwheel, Users, Sparkles, Film, Star } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -64,97 +64,96 @@ export function InputOTPForm() {
   }, [form.watch("pin")]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("otp", data);
-
     const newData: any = { token: data.pin, email: email };
     const res = await OTPVerifyMutation.mutateAsync(newData);
-    console.log(res);
     toast.success(res);
   }
 
   async function handleResendOTP() {
     if (!email) {
-      return toast.error("you can't resend code");
+      return toast.error("You can't resend code");
     }
-
     setTimer(60);
     setIsResendEnabled(false);
-    console.log("email", email);
-    const res = await OtpAgainMutation.mutateAsync({ email: email });
-    console.log("res", res);
-    console.log("Resend OTP");
+    await OtpAgainMutation.mutateAsync({ email: email });
   }
 
   return (
-    <>
-      <div className="mt-5">
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="my-8 text-center font-bold text-5xl ">
-            OTP Verification
-          </h1>
-          <p className="my-4 font-semibold md:w-[60%] w-[80%]">
-            Please enter the one-time password sent to your email:{" "}
-            <span className="text-pink-500">{email}</span>
-          </p>
-        </div>
-        <div className="flex   justify-center items-center ">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className=" space-y-6  "
-            >
-              <FormField
-                control={form.control}
-                name="pin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>One-Time Password send to your email</FormLabel>
-                    <FormControl>
-                      <InputOTP maxLength={6} {...field}>
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {OTPVerifyMutation.isPending || OtpAgainMutation.isPending ? (
-                <LoaderPinwheel className="animate-spin" />
-              ) : (
-                <div className="mt-4  text-end">
-                  <button
-                    onClick={handleResendOTP}
-                    className="disabled:text-gray-300"
-                    disabled={!isResendEnabled}
-                  >
-                    {isResendEnabled ? "Resend OTP" : `Resend OTP in ${timer}s`}
-                  </button>
-                </div>
+    <div className="bg-background text-foreground relative min-h-screen flex flex-col items-center justify-center overflow-hidden transition-colors duration-300">
+      {/* Decorative Bubbles */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-xl animate-float-delayed"></div>
+        <div className="absolute bottom-20 left-40 w-80 h-80 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl animate-float-slow"></div>
+      </div>
+      {/* Floating Icons */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <Film className="absolute top-32 left-12 text-muted-foreground w-8 h-8 animate-bounce" />
+        <Star className="absolute top-48 right-16 text-yellow-400/40 w-6 h-6 animate-pulse" />
+        <Sparkles className="absolute top-60 left-1/3 text-purple-400/30 w-7 h-7 animate-spin" />
+        <Users className="absolute bottom-32 right-1/4 text-green-400/30 w-8 h-8 animate-bounce" />
+      </div>
+      {/* OTP Card */}
+      <div className="w-[90%] md:w-[30%] py-8 px-8 bg-white/80 dark:bg-black/70 border-2 border-white/30 rounded-3xl shadow-2xl backdrop-blur-md z-10 transition-all duration-500">
+        <h1 className="text-center font-bold text-4xl mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+          OTP Verification
+        </h1>
+        <p className="mb-6 font-semibold text-center">
+          Please enter the one-time password sent to your email:{" "}
+          <span className="text-pink-500">{email}</span>
+        </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="pin"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>One-Time Password</FormLabel>
+                  <FormControl>
+                    <InputOTP maxLength={6} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </form>
-          </Form>
-        </div>
-
+            />
+            {OTPVerifyMutation.isPending || OtpAgainMutation.isPending ? (
+              <div className="flex justify-center">
+                <LoaderPinwheel className="animate-spin w-6 h-6" />
+              </div>
+            ) : (
+              <div className="mt-4 text-end">
+                <button
+                  type="button"
+                  onClick={handleResendOTP}
+                  className="disabled:text-gray-300 text-pink-600 font-semibold hover:underline"
+                  disabled={!isResendEnabled}
+                >
+                  {isResendEnabled ? "Resend OTP" : `Resend OTP in ${timer}s`}
+                </button>
+              </div>
+            )}
+          </form>
+        </Form>
         <div className="items-center text-center flex justify-center my-10">
-          <p className="md:w-[60%] w-[80%] ">
-            Upon initiating account verification, a 6-digit verification code is
-            automatically generated and sent to the contact information
-            associated with your {}
-            <span className="text-pink-500 font-bold">Email:{email}</span> .
-            Please enter this code in the provided field below to complete the
-            verification process. This step ensures the security and integrity
-            of your account information.
+          <p className="md:w-[90%] w-[98%] text-muted-foreground">
+            A 6-digit verification code has been sent to your{" "}
+            <span className="text-pink-500 font-bold">Email: {email}</span>.
+            Please enter this code above to complete verification. This step
+            ensures the security and integrity of your account.
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -165,20 +164,15 @@ function useOTPVerifyMutation() {
     mutationKey: ["otp"],
     mutationFn: async (data) => {
       const res = await axios.post("/api/users/verifyemail", data);
-      console.log("res", res.data);
       return res.data.message;
     },
     onSuccess: (_, { email }) => {
-      console.log("successfully verify", email);
       router.push(`/login`);
     },
     onError: (error) => {
-      console.error("OTP verification failed: ", error.message);
-
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
         "An error occurred during OTP verification";
-
       toast.error(errorMessage);
     },
   });
@@ -189,18 +183,15 @@ function useAgainOtpMutation() {
     mutationKey: ["otp"],
     mutationFn: async (data) => {
       const res = await axios.post("/api/users/resendcode", data);
-      console.log(res.data);
+      return res.data;
     },
     onSuccess: () => {
       toast.success("OTP sent again successfully!");
     },
     onError: (error) => {
-      console.error("Sending OTP again failed: ", error);
-
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
         "An error occurred while sending OTP again";
-
       toast.error(errorMessage);
     },
   });

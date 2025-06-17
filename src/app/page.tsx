@@ -10,6 +10,7 @@ import "@/styles/home.css";
 import { Play, Users, Star, Sparkles, Film, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Typewriter } from "react-simple-typewriter";
+import Footer from "@/components/ui/footer";
 
 export default function HomePage() {
   const { user } = useAuthContext();
@@ -123,6 +124,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }
