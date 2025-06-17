@@ -57,8 +57,14 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex min-h-screen justify-center items-center">
-        <LoaderPinwheel className="animate-spin w-28 h-28" />
+      <div className="flex min-h-screen justify-center items-center bg-gradient-to-br from-purple-100/60 via-pink-100/60 to-yellow-100/40 dark:from-black dark:via-gray-900 dark:to-gray-800 transition-colors duration-500 relative overflow-hidden">
+        {/* Decorative Bubbles */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-xl animate-float-delayed"></div>
+          <div className="absolute bottom-20 left-40 w-80 h-80 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl animate-float-slow"></div>
+        </div>
+        <LoaderPinwheel className="animate-spin w-28 h-28 text-purple-500 z-10" />
       </div>
     );
   }
