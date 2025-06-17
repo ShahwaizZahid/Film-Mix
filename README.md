@@ -1,37 +1,108 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎬 Filmix
 
-## Getting Started
+**Filmix** is a modern, full-stack movie discovery web app built with Next.js, React, and Tailwind CSS. It offers a beautiful, animated UI with glassmorphism, advanced search, authentication, movie details, and more.
 
-First, run the development server:
+---
+
+## ✨ Features
+
+- **Modern UI**: Glassmorphism, animated backgrounds, floating icons, and responsive design.
+- **Authentication**: Signup, login, OTP email verification, and protected routes.
+- **Movie Search**: Search movies, actors, genres with instant results.
+- **Infinite Scroll**: Browse movies with smooth infinite scrolling.
+- **Movie Details**: View detailed movie pages with cast, plot, ratings, and more.
+- **Related Movies**: Discover similar movies with a slick carousel.
+- **User Context**: Auth state managed globally.
+- **Error Handling**: Friendly error and loading states.
+- **Dark/Light Mode**: Fully responsive and theme-aware.
+- **TypeScript**: Full type safety across the stack.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ShahwaizZahid/filmix.git
+cd filmix
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file and add your API keys and config:
+
+```
+NEXT_PUBLIC_API_URL=your_api_url
+# Add other required env variables here
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Frontend**: Next.js, React, Tailwind CSS, TypeScript
+- **State Management**: React Context, React Query
+- **UI Icons**: Lucide React
+- **API**: RESTful endpoints (custom or third-party movie API)
+- **Authentication**: JWT, cookies, OTP email verification
+- **Other**: react-simple-typewriter, react-hot-toast, slick-carousel
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+src/
+  components/
+    ui/           # All UI components (Navbar, Footer, MovieCard, etc.)
+  hooks/          # Custom React hooks
+  pages/          # Next.js pages & API routes
+  app/            # App directory (Next.js 13+)
+  context/        # Auth and other context providers
+  schemas/        # Zod schemas for validation
+  styles/         # Global and custom styles
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# Film-Mix
+Contributions are welcome! Please open issues or pull requests for improvements and bug fixes.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 🙏 Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Lucide Icons](https://lucide.dev/)
+- [OMDb API](https://www.omdbapi.com/) (or your movie data source)
+
+---
+
+> **Filmix** — Discover, explore, and enjoy movies like never before!
