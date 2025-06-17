@@ -1,10 +1,22 @@
 import React from "react";
-import { LoginForm } from "@/components/ui/login";
+import LoginPage from "@/components/ui/login";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="min-h-screen min-w-screen flex justify-center items-center">
-      <LoginForm />
-    </div>
+    <>
+      <div className="relative">
+        {/* Back to Home Button */}
+        <Link
+          href="/"
+          className="absolute top-4 left-4 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/70 dark:bg-black/60 shadow-md border border-border text-foreground hover:bg-accent/60 transition z-20"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Back to Home
+        </Link>
+        <LoginPage />
+      </div>
+    </>
   );
 }

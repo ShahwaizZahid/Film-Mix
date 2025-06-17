@@ -8,12 +8,11 @@ import { useMutation } from "@tanstack/react-query";
 import { SignupFormData } from "@/hooks/DataTypes";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { useRouter, useSearchParams } from "next/navigation";
-import { LoaderPinwheel } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LoaderPinwheel, Users, Sparkles, Film, Star } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { formSchema, FormValues } from "@/schemas/signupSchema";
+import React from "react";
 
 export function SignupForm() {
   const form = useForm<FormValues>({
@@ -40,10 +40,24 @@ export function SignupForm() {
   };
 
   return (
-    <>
-      <div className=" py-4 px-6 md:w-[30%] w-[90%] border-2 border-black rounded-3xl">
-        <div className="items-center py-3 flex justify-center text-3xl font-bold">
-          Signup
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden transition-colors duration-300 bg-background text-foreground">
+      {/* Decorative Bubbles */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-xl animate-float-delayed"></div>
+        <div className="absolute bottom-20 left-40 w-80 h-80 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl animate-float-slow"></div>
+      </div>
+      {/* Floating Icons */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <Film className="absolute top-32 left-12 text-muted-foreground w-8 h-8 animate-bounce" />
+        <Star className="absolute top-48 right-16 text-yellow-400/40 w-6 h-6 animate-pulse" />
+        <Sparkles className="absolute top-60 left-1/3 text-purple-400/30 w-7 h-7 animate-spin" />
+        <Users className="absolute bottom-32 right-1/4 text-green-400/30 w-8 h-8 animate-bounce" />
+      </div>
+      {/* Signup Card */}
+      <div className="w-[90%] md:w-[30%] py-8 px-8 bg-white/80 dark:bg-black/70 border-2 border-white/30 rounded-3xl shadow-2xl backdrop-blur-md z-10 transition-all duration-500">
+        <div className="text-center text-4xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+          Sign Up for Filmix
         </div>
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -55,7 +69,7 @@ export function SignupForm() {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      className=" text-md"
+                      className="text-md"
                       placeholder="Username"
                       {...field}
                     />
@@ -73,7 +87,7 @@ export function SignupForm() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      className=" text-md"
+                      className="text-md"
                       type="email"
                       placeholder="Email"
                       {...field}
@@ -92,7 +106,7 @@ export function SignupForm() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      className=" text-md"
+                      className="text-md"
                       type="password"
                       placeholder="Password"
                       {...field}
@@ -106,25 +120,28 @@ export function SignupForm() {
               <Button
                 disabled={signupMutation.isPending || signupMutation.isSuccess}
                 type="submit"
-                className="border-2 border-white hover:bg-white hover:text-black"
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold border border-white/30 shadow-lg hover:scale-105 transition-transform"
               >
                 {!signupMutation.isPending ? (
-                  "Signup"
+                  "Sign Up"
                 ) : (
                   <LoaderPinwheel className="animate-spin" />
                 )}
               </Button>
             </div>
           </form>
-          <div className=" my-6">
-            if already have account?{" "}
-            <span className="text-blue-600 border-b-2 border-b-blue-600 font-semibold ">
-              <Link href="/login">login</Link>
-            </span>
+          <div className="text-center mt-6 text-muted-foreground">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="text-pink-600 dark:text-pink-400 font-semibold hover:underline"
+            >
+              Login
+            </Link>
           </div>
         </FormProvider>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -137,17 +154,12 @@ function useSignup() {
       return res.data.message;
     },
     onSuccess: (_, { email }) => {
-      console.log("success");
       router.push(`/otp?email=${encodeURIComponent(email)}`);
     },
     onError: (error) => {
-      console.error("Signup failed: ", error);
-
-      // Type assertion for error response
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
         "An error occurred during signup";
-
       toast.error(errorMessage);
     },
   });
