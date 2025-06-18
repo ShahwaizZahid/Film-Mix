@@ -66,7 +66,6 @@ export function LoginForm() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     await loginMutation.mutateAsync(data);
-    router.push("/movies");
   };
 
   return (
@@ -149,9 +148,9 @@ function useLogin() {
       return res.data;
     },
     onSuccess: (data) => {
-      toast.success("Logged in successfully");
-      setUser(data);
       router.push("/movies");
+      toast.success("Logged in successfully keh ty deta");
+      setUser(data);
     },
     onError: (error) => {
       console.error("Login failed:", error);
