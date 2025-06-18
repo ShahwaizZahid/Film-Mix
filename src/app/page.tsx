@@ -17,7 +17,6 @@ export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    console.log("current user", user);
     setIsVisible(true);
   }, [user]);
 

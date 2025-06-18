@@ -53,6 +53,7 @@ export default function LoginPage() {
 }
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,8 +65,8 @@ export function LoginForm() {
   const loginMutation = useLogin();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const res = await loginMutation.mutateAsync(data);
-    toast.success(res.message);
+    await loginMutation.mutateAsync(data);
+    router.push("/movies");
   };
 
   return (
