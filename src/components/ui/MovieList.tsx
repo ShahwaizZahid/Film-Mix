@@ -5,7 +5,7 @@ import MovieCard from "./movieCard";
 import { SkeletonMovieCard } from "./movieCardSkelton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { MovieTypes } from "@/hooks/DataTypes";
+import { MovieTypes, MoviesApiResponse } from "@/hooks/DataTypes";
 
 export default function MoviesList() {
   const observerElem = useRef<HTMLDivElement>(null);
@@ -19,7 +19,7 @@ export default function MoviesList() {
     hasNextPage,
     isFetchingNextPage,
     isSuccess,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<MoviesApiResponse>({
     queryKey: ["movies"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await axios.get(`/api/movies`, {
@@ -28,8 +28,11 @@ export default function MoviesList() {
       return response.data;
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.length === 0) return undefined;
-      return lastPage.page + 1;
+      // Use the pagination metadata from the API response
+      if (!lastPage.pagination?.hasNextPage) {
+        return undefined;
+      }
+      return lastPage.pagination.nextPage;
     },
     initialPageParam: 1,
   });
@@ -50,14 +53,17 @@ export default function MoviesList() {
   }, [isSuccess, data]);
 
   useEffect(() => {
-    if (observerElem.current && hasNextPage) {
+    if (observerElem.current && hasNextPage && !isFetchingNextPage) {
       const observer = new IntersectionObserver(
         (entries) => {
-          if (entries[0].isIntersecting) {
+          if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
           }
         },
-        { threshold: 1 }
+        {
+          threshold: 0.1,
+          rootMargin: "100px",
+        }
       );
 
       observer.observe(observerElem.current);
@@ -66,7 +72,7 @@ export default function MoviesList() {
         if (observerElem.current) observer.unobserve(observerElem.current);
       };
     }
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   if (isError) {
     return (
@@ -79,14 +85,24 @@ export default function MoviesList() {
   return (
     <>
       <div className="w-full px-2 md:px-8">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-8 place-items-center mt-12">
-          {(isLoading && movies.length === 0) || isFetchingNextPage
-            ? Array.from({ length: 8 }).map((_, index) => (
-                <SkeletonMovieCard key={index} />
-              ))
-            : movies.map((movie) => (
-                <MovieCard key={movie._id} movie={movie} />
-              ))}
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 place-items-stretch justify-items-center mt-12">
+          {/* Show existing movies */}
+          {movies.map((movie) => (
+            <MovieCard key={movie._id} movie={movie} />
+          ))}
+
+          {/* Show skeleton cards when loading initial data or fetching next page */}
+          {isLoading &&
+            movies.length === 0 &&
+            Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonMovieCard key={`skeleton-${index}`} />
+            ))}
+
+          {/* Show additional skeleton cards when fetching next page */}
+          {isFetchingNextPage &&
+            Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonMovieCard key={`skeleton-next-${index}`} />
+            ))}
         </div>
       </div>
       <div

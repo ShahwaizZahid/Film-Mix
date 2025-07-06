@@ -4,6 +4,7 @@ import MoviesList from "@/components/ui/MovieList";
 import Navbar from "@/components/ui/Navbar";
 import SearchForm from "@/components/ui/Search";
 import useSearch from "@/hooks/useSearch";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { Users, Sparkles, Film, Star } from "lucide-react";
 
 export default function Page() {
@@ -36,7 +37,9 @@ export default function Page() {
           <SearchForm onSubmit={handleSearchSubmit} />
         </div>
         <div className="w-full z-10">
-          <MoviesList />
+          <ErrorBoundary>
+            <MoviesList />
+          </ErrorBoundary>
         </div>
       </div>
     </>
