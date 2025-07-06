@@ -3,7 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { USERTypes } from "@/hooks/DataTypes";
-import { LoaderPinwheel } from "lucide-react";
+
 // Define the shape of the state object
 interface UserState {
   message: string | null;
@@ -14,6 +14,7 @@ interface UserState {
 type AuthContextType = {
   user: UserState;
   setUser: (user: UserState) => void;
+  isLoading: boolean;
 };
 
 // Create the AuthContext with default value null
@@ -38,41 +39,41 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     user: null,
   });
 
-  // Fetch user data
+  // Fetch user data with optimized settings
   const { isLoading } = useQuery<UserState, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
-      const response = await axios.post("/api/users/me");
-      const data: UserState = {
-        message: response.data.message || null,
-        user: response.data.user || null,
-      };
+      try {
+        const response = await axios.post("/api/users/me");
+        const data: UserState = {
+          message: response.data.message || null,
+          user: response.data.user || null,
+        };
 
-      setUser(data);
-
-      return data;
+        setUser(data);
+        return data;
+      } catch (error) {
+        // If user is not authenticated, don't treat it as an error
+        if (axios.isAxiosError(error) && error.response?.status === 400) {
+          const data: UserState = { message: null, user: null };
+          setUser(data);
+          return data;
+        }
+        throw error;
+      }
     },
+    retry: 1, // Only retry once
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: false, // Don't refetch on component mount if data exists
   });
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen justify-center items-center bg-gradient-to-br from-purple-100/60 via-pink-100/60 to-yellow-100/40 dark:from-black dark:via-gray-900 dark:to-gray-800 transition-colors duration-500 relative overflow-hidden">
-        {/* Decorative Bubbles */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-xl animate-float"></div>
-          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-xl animate-float-delayed"></div>
-          <div className="absolute bottom-20 left-40 w-80 h-80 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl animate-float-slow"></div>
-        </div>
-        <LoaderPinwheel className="animate-spin w-28 h-28 text-purple-500 z-10" />
-      </div>
-    );
-  }
-
-  // Provide context value
+  // Provide context value - no loading screen, let individual components handle loading
   const value: AuthContextType = {
     user,
     setUser,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
