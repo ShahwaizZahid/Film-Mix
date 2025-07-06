@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { FormSchema } from "@/schemas/otpSchema";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios, { AxiosError } from "axios";

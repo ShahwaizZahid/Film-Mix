@@ -1,9 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { Suspense } from "react";
 import { InputOTPForm } from "@/components/ui/otp";
 export default function page() {
   return (
     <>
-      <InputOTPForm></InputOTPForm>
+      <Suspense fallback={<div>Loading OTP...</div>}>
+        <InputOTPForm></InputOTPForm>
+      </Suspense>
     </>
   );
 }
