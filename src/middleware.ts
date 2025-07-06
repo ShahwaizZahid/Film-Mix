@@ -7,7 +7,13 @@ export function middleware(request: NextRequest) {
   const isPublicPath =
     path === "/login" || path === "/signup" || path === "/otp";
   const isPrivatePath = path === "/movies";
+  const isApiPath = path.startsWith("/api/");
   const token = request.cookies.get("token")?.value || "";
+
+  // Allow API calls to proceed without authentication check
+  if (isApiPath) {
+    return NextResponse.next();
+  }
 
   if (isPublicPath && token) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -18,5 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/signup", "/otp", "/movies"],
+  matcher: ["/login", "/signup", "/otp", "/movies", "/api/:path*"],
 };
