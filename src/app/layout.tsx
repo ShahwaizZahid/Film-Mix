@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 import { QueryClientProviderWrapper } from "@/helper/querryclient-provider";
 import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +28,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = new QueryClient();
   return (
     <html lang="en" suppressHydrationWarning>
       <body

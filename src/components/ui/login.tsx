@@ -149,7 +149,7 @@ function useLogin() {
     },
     onSuccess: (data) => {
       router.push("/movies");
-      toast.success("Logged in successfully keh ty deta");
+      toast.success("Logged in successfully");
       setUser(data);
     },
     onError: (error) => {

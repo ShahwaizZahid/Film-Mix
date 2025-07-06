@@ -46,3 +46,20 @@ export type MovieTypes = {
   __v: number;
   _id: string;
 };
+
+export type PaginationMetadata = {
+  page: number;
+  limit: number;
+  totalCount: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  nextPage: number | null;
+  prevPage: number | null;
+};
+
+export type MoviesApiResponse = {
+  message: string;
+  data: MovieTypes[];
+  pagination: PaginationMetadata;
+};
